@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scale Team Sales Dashboard 2026</title>
+<style>
+:root {
+  --gold: #C9A84C;
+  --gold-light: #E8C96B;
+  --gold-pale: #F5E8C0;
+  --ink: #0F0C07;
+  --ink-mid: #1A1510;
+  --ink-soft: #2A1E12;
+  --cream: #FAF7F0;
+  --cream-warm: #F3EAD8;
+  --mist: #8A9BAA;
+  --red: #C93C3C;
+  --green: #3a7c0a;
+}
+*,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body {
+  background:var(--cream);
+  color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',Arial,sans-serif;
+  font-size:15px;
+  line-height:1.7;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ── Layout ── */
+.inner { max-width:680px; margin:0 auto; padding:60px 28px; }
+.s-cream { background:var(--cream); }
+.s-warm  { background:var(--cream-warm); }
+.s-dark  { background:var(--ink-mid); color:#fff; }
+.s-ink   { background:var(--ink); color:#fff; }
+
+/* ── Cover ── */
+.cover {
+  min-height:45vw;
+  max-height:340px;
+  background:var(--ink);
+  display:flex; align-items:center; justify-content:center;
+  text-align:center;
+  padding:48px 28px;
+  position:relative;
+  overflow:hidden;
+}
+.cover::before {
+  content:'';
+  position:absolute; inset:0;
+  background:radial-gradient(ellipse 80% 60% at 50% 100%, rgba(201,168,76,0.12), transparent);
+}
+.cover-eyebrow {
+  font-size:11px; letter-spacing:.45em; color:var(--gold);
+  text-transform:uppercase; display:block; margin-bottom:18px;
+  position:relative; z-index:1;
+}
+.cover-title {
+  font-size:clamp(26px,5vw,42px); font-weight:700; color:#fff;
+  line-height:1.15; letter-spacing:.02em;
+  position:relative; z-index:1; margin-bottom:10px;
+}
+.cover-title em { color:var(--gold-light); font-style:normal; }
+.cover-sub {
+  font-size:13px; color:rgba(255,255,255,.5); letter-spacing:.12em;
+  position:relative; z-index:1; margin-top:18px;
+}
+.cover-divider {
+  display:flex; align-items:center; gap:10px;
+  margin:16px auto; width:120px; position:relative; z-index:1;
+}
+.cover-divider span { flex:1; height:1px; background:rgba(201,168,76,.3); }
+.cover-divider i { color:var(--gold); font-style:normal; font-size:9px; }
+
+/* ── Section eyebrow ── */
+.eyebrow {
+  font-size:10px; font-weight:600; letter-spacing:.5em;
+  color:var(--gold); text-transform:uppercase;
+  display:block; margin-bottom:14px;
+}
+.s-dark .eyebrow, .s-ink .eyebrow { color:var(--gold); }
+
+/* ── Section title ── */
+.sec-title {
+  font-size:clamp(22px,4vw,32px); font-weight:700;
+  line-height:1.2; margin-bottom:6px; letter-spacing:.01em;
+}
+.s-dark .sec-title, .s-ink .sec-title { color:#fff; }
+.gold-rule { width:48px; height:2px; background:var(--gold); margin:14px 0 36px; }
+
+/* ── Big number card ── */
+.big-card {
+  background:var(--ink); padding:36px 38px; margin:0 0 10px;
+  position:relative; overflow:hidden;
+}
+.big-card::after {
+  content:''; position:absolute; left:0; top:0; bottom:0;
+  width:4px; background:linear-gradient(to bottom,var(--gold),transparent);
+}
+.big-card-label { font-size:11px; letter-spacing:.3em; color:var(--gold); display:block; margin-bottom:8px; text-transform:uppercase; }
+.big-card-num   { font-size:clamp(28px,5vw,40px); font-weight:700; color:#fff; line-height:1; margin-bottom:4px; }
+.big-card-sub   { font-size:12px; color:rgba(255,255,255,.4); letter-spacing:.08em; }
+
+/* ── Progress bar ── */
+.pb-wrap { margin:20px 0 6px; }
+.pb-track { background:rgba(255,255,255,.1); border-radius:99px; height:8px; overflow:hidden; }
+.s-cream .pb-track, .s-warm .pb-track { background:rgba(0,0,0,.1); }
+.pb-fill  { height:8px; border-radius:99px; }
+.pb-meta  { display:flex; justify-content:space-between; font-size:12px; color:rgba(255,255,255,.45); margin-top:6px; }
+.s-cream .pb-meta, .s-warm .pb-meta { color:var(--mist); }
+.pb-meta .hi { color:var(--gold-light); font-weight:600; }
+.s-cream .pb-meta .hi, .s-warm .pb-meta .hi { color:var(--red); font-weight:600; }
+
+/* ── KPI row ── */
+.kpi-row { display:flex; gap:8px; flex-wrap:wrap; margin:24px 0 0; }
+.kpi {
+  flex:1; min-width:140px;
+  background:rgba(255,255,255,.05); border:1px solid rgba(201,168,76,.15);
+  padding:16px 18px; border-radius:2px;
+}
+.s-cream .kpi, .s-warm .kpi {
+  background:rgba(0,0,0,.03); border:1px solid rgba(201,168,76,.2);
+}
+.kpi-l { font-size:10px; color:rgba(255,255,255,.4); letter-spacing:.08em; text-transform:uppercase; margin-bottom:5px; }
+.s-cream .kpi-l, .s-warm .kpi-l { color:var(--mist); }
+.kpi-v { font-size:18px; font-weight:700; color:#fff; }
+.s-cream .kpi-v, .s-warm .kpi-v { color:var(--ink); }
+.kpi-v.red  { color:#E87070; }
+.s-cream .kpi-v.red, .s-warm .kpi-v.red { color:var(--red); }
+
+/* ── Team cards ── */
+.team-grid { display:flex; gap:8px; flex-wrap:wrap; margin:0 0 10px; }
+.team-card {
+  flex:1; min-width:180px;
+  border:1px solid rgba(201,168,76,.2);
+  padding:20px 22px;
+  background:var(--cream);
+}
+.team-card-name  { font-size:12px; font-weight:600; letter-spacing:.08em; color:var(--ink-soft); text-transform:uppercase; margin-bottom:4px; }
+.team-card-num   { font-size:22px; font-weight:700; color:var(--ink); margin-bottom:10px; line-height:1; }
+.team-card-meta  { font-size:11px; color:var(--mist); margin-top:6px; }
+.team-card-meta .gap-red  { color:var(--red); font-weight:600; }
+.team-card-meta .gap-green{ color:var(--green); font-weight:600; }
+.team-badge {
+  display:inline-block; font-size:10px; font-weight:700;
+  padding:2px 8px; letter-spacing:.04em;
+  border:1px solid var(--gold); color:var(--gold);
+  margin-bottom:10px;
+}
+
+/* ── Month accordion (CSS only, no JS) ── */
+.acc-wrap { margin:0 0 4px; }
+.acc-wrap input[type="checkbox"] { display:none; }
+.acc-label {
+  display:flex; align-items:center; gap:10px;
+  padding:11px 16px;
+  background:rgba(201,168,76,.06);
+  border:1px solid rgba(201,168,76,.15);
+  cursor:pointer; user-select:none;
+  transition:background .15s;
+}
+.acc-label:hover { background:rgba(201,168,76,.12); }
+.acc-lbl   { font-size:13px; font-weight:700; min-width:38px; color:var(--ink); }
+.s-dark .acc-lbl, .s-ink .acc-lbl { color:#fff; }
+.acc-bar-wrap { flex:1; max-width:180px; }
+.acc-bar-track { background:rgba(0,0,0,.1); border-radius:99px; height:5px; overflow:hidden; }
+.s-dark .acc-bar-track, .s-ink .acc-bar-track { background:rgba(255,255,255,.1); }
+.acc-bar-fill { height:5px; border-radius:99px; }
+.acc-total { font-size:13px; font-weight:700; white-space:nowrap; color:var(--ink); }
+.s-dark .acc-total, .s-ink .acc-total { color:#fff; }
+.acc-pct {
+  font-size:10px; font-weight:700; padding:2px 7px;
+  border:1px solid; white-space:nowrap;
+}
+.acc-stu  { font-size:11px; color:var(--mist); white-space:nowrap; }
+.acc-arrow{ font-size:10px; color:var(--mist); margin-left:auto; flex-shrink:0; transition:transform .2s; display:inline-block; }
+
+.acc-body {
+  max-height:0; overflow:hidden;
+  transition:max-height .3s ease;
+  background:var(--cream-warm);
+  border:1px solid rgba(201,168,76,.15); border-top:none;
+}
+.acc-wrap input:checked ~ .acc-body { max-height:1200px; }
+.acc-wrap input:checked ~ .acc-label .acc-arrow { transform:rotate(180deg); }
+.acc-body-inner { padding:18px 18px 20px; }
+
+.acc-teams { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:18px; }
+.acc-tbox {
+  flex:1; min-width:140px;
+  background:rgba(0,0,0,.04); border:1px solid rgba(201,168,76,.12);
+  padding:12px 14px;
+}
+.acc-tbox .tl { font-size:10px; color:var(--mist); letter-spacing:.05em; text-transform:uppercase; margin-bottom:3px; }
+.acc-tbox .tv { font-size:14px; font-weight:700; color:var(--ink); }
+.acc-tbox .ts { font-size:10px; color:var(--mist); margin-top:1px; }
+
+/* ── Course table ── */
+.c-label { font-size:10px; letter-spacing:.35em; color:var(--gold); text-transform:uppercase; display:block; margin-bottom:10px; }
+table.ctbl { width:100%; border-collapse:collapse; }
+table.ctbl thead th {
+  font-size:10px; color:var(--mist); letter-spacing:.06em;
+  text-transform:uppercase; text-align:left; padding:0 0 8px;
+  border-bottom:1px solid rgba(201,168,76,.2);
+}
+table.ctbl thead th:last-child { text-align:right; }
+table.ctbl tbody td {
+  font-size:13px; color:var(--ink-soft); padding:7px 0;
+  border-bottom:1px solid rgba(0,0,0,.05); vertical-align:top; line-height:1.45;
+}
+table.ctbl tbody tr:last-child td { border-bottom:none; }
+table.ctbl tbody td:last-child {
+  text-align:right; font-weight:700; color:var(--gold);
+  white-space:nowrap; padding-left:12px; min-width:30px;
+}
+
+/* ── Reg collapsible (CSS only) ── */
+.reg-wrap input[type="checkbox"] { display:none; }
+.reg-label {
+  display:flex; align-items:center; justify-content:space-between;
+  margin-top:20px; padding:13px 16px;
+  background:rgba(201,168,76,.07); border:1px solid rgba(201,168,76,.2);
+  cursor:pointer; user-select:none; transition:background .15s;
+}
+.reg-label:hover { background:rgba(201,168,76,.13); }
+.s-dark .reg-label, .s-ink .reg-label { background:rgba(201,168,76,.08); }
+.reg-wrap input:checked ~ .reg-label { background:rgba(201,168,76,.13); }
+.reg-label-left { display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+.reg-label-title { font-size:13px; font-weight:700; color:var(--ink); }
+.s-dark .reg-label-title, .s-ink .reg-label-title { color:#fff; }
+.reg-badge {
+  font-size:10px; font-weight:700; padding:2px 8px; letter-spacing:.04em;
+  border:1px solid var(--gold); color:var(--gold);
+}
+.reg-arrow { font-size:10px; color:var(--mist); transition:transform .2s; display:inline-block; }
+.reg-wrap input:checked ~ .reg-label .reg-arrow { transform:rotate(180deg); }
+
+.reg-panel {
+  max-height:0; overflow:hidden; transition:max-height .4s ease;
+  background:var(--cream-warm);
+  border:1px solid rgba(201,168,76,.15); border-top:none;
+}
+.reg-wrap input:checked ~ .reg-panel { max-height:2000px; }
+.reg-panel-inner { padding:20px 20px 22px; }
+
+.reg-month-row { display:flex; gap:6px; margin-bottom:18px; flex-wrap:wrap; }
+.reg-mbox { flex:1; min-width:72px; text-align:center; background:rgba(0,0,0,.04); border:1px solid rgba(201,168,76,.12); padding:8px 6px; }
+.reg-mbox .ml { font-size:10px; color:var(--mist); margin-bottom:2px; }
+.reg-mbox .mv { font-size:15px; font-weight:700; color:var(--ink); }
+
+/* ── Bar chart (pure CSS, row-based) ── */
+.bchart { width:100%; border-collapse:collapse; margin:0 0 10px; }
+.bchart td { vertical-align:bottom; padding:0 4px; text-align:center; }
+.bchart .bval { font-size:10px; font-weight:700; color:var(--ink-soft); padding-bottom:4px; white-space:nowrap; }
+.bchart .bbar-cell { height:160px; vertical-align:bottom; padding:0 6px; }
+.bbar-inner { display:flex; flex-direction:column; justify-content:flex-end; height:100%; }
+.bbar { width:100%; min-height:3px; }
+.bchart .blbl { font-size:12px; font-weight:700; color:var(--ink-soft); padding-top:6px; }
+.bchart .bpct { font-size:10px; font-weight:700; padding-top:2px; }
+/* target line row */
+.btarget-row td { padding:0 6px; }
+.btarget-line { border-top:2px dashed var(--red); position:relative; }
+.btarget-label { font-size:9px; color:var(--red); font-weight:700; float:right; margin-top:-14px; white-space:nowrap; }
+
+/* ── Legend ── */
+.chart-legend { display:flex; flex-wrap:wrap; gap:12px; font-size:11px; color:var(--mist); margin-top:8px; }
+.leg { display:flex; align-items:center; gap:5px; }
+.leg-sq { width:9px; height:9px; flex-shrink:0; }
+.leg-dash { width:18px; border-top:2px dashed var(--red); flex-shrink:0; }
+
+/* ── Divider ── */
+.gold-divider { display:flex; align-items:center; gap:12px; margin:0 0 32px; }
+.gold-divider span { flex:1; height:1px; background:rgba(201,168,76,.25); }
+.gold-divider i { color:var(--gold); font-style:normal; font-size:9px; }
+
+/* ── Footer ── */
+.footer-section { background:var(--ink); padding:40px 28px; text-align:center; }
+.footer-section p { font-size:11px; color:rgba(255,255,255,.3); letter-spacing:.12em; line-height:2; }
+.footer-section .fg { color:var(--gold); }
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<section class="cover">
+  <div class="inner" style="padding:0;text-align:center;position:relative;z-index:1;">
+    <span class="cover-eyebrow">Guardian Venture · Scale Team</span>
+    <h1 class="cover-title">Sales Dashboard <em>2026</em></h1>
+    <div class="cover-divider"><span></span><i>◆</i><span></span></div>
+    <p class="cover-sub">All figures in MYR &nbsp;·&nbsp; May 2026 Final</p>
+    <div style="display:flex;gap:8px;justify-content:center;margin-top:20px;flex-wrap:wrap;">
+      <span style="font-size:10px;font-weight:700;padding:3px 10px;border:1px solid rgba(201,168,76,.5);color:var(--gold);letter-spacing:.05em;">A · INFINITY</span>
+      <span style="font-size:10px;font-weight:700;padding:3px 10px;border:1px solid rgba(201,168,76,.5);color:var(--gold);letter-spacing:.05em;">B · GUARDIAN</span>
+      <span style="font-size:10px;font-weight:700;padding:3px 10px;border:1px solid rgba(201,168,76,.5);color:var(--gold);letter-spacing:.05em;">C · ABUNDANCE</span>
+    </div>
+  </div>
+</section>
+
+<!-- 01 YEARLY OVERVIEW -->
+<section class="s-ink">
+<div class="inner">
+  <span class="eyebrow">01 · Yearly Overview</span>
+  <h2 class="sec-title">Jan – May 2026</h2>
+  <div class="gold-rule"></div>
+
+  <div class="big-card">
+    <span class="big-card-label">Actual Total</span>
+    <div class="big-card-num">RM 3,247,291</div>
+    <div class="big-card-sub">Annual Target: RM 12,000,000</div>
+    <div class="pb-wrap">
+      <div class="pb-track"><div class="pb-fill" style="width:27%;background:var(--gold);"></div></div>
+      <div class="pb-meta">
+        <span>27% of yearly target &nbsp;·&nbsp; 610 students closed</span>
+        <span class="hi">Remaining: RM 8,752,709</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-l">Months Remaining</div><div class="kpi-v">7 months</div></div>
+    <div class="kpi"><div class="kpi-l">Required Avg (Jun–Dec)</div><div class="kpi-v red">RM 1,250,387</div></div>
+    <div class="kpi"><div class="kpi-l">Avg So Far (Jan–May)</div><div class="kpi-v">RM 649,458</div></div>
+    <div class="kpi"><div class="kpi-l">Monthly Uplift Needed</div><div class="kpi-v red">RM 600,929</div></div>
+  </div>
+
+  <!-- Course Registration Collapsible -->
+  <div class="reg-wrap">
+    <input type="checkbox" id="reg-toggle">
+    <label class="reg-label" for="reg-toggle">
+      <div class="reg-label-left">
+        <span class="reg-label-title">Total Course Registrations — Jan to May 2026</span>
+        <span class="reg-badge">610 students</span>
+      </div>
+      <span class="reg-arrow">▼</span>
+    </label>
+    <div class="reg-panel">
+      <div class="reg-panel-inner">
+        <div class="reg-month-row">
+          <div class="reg-mbox"><div class="ml">Jan</div><div class="mv">192</div></div>
+          <div class="reg-mbox"><div class="ml">Feb</div><div class="mv">65</div></div>
+          <div class="reg-mbox"><div class="ml">Mar</div><div class="mv">197</div></div>
+          <div class="reg-mbox"><div class="ml">Apr</div><div class="mv">94</div></div>
+          <div class="reg-mbox"><div class="ml">May</div><div class="mv">62</div></div>
+        </div>
+        <span class="c-label">Course Breakdown — Jan to May Combined</span>
+        <table class="ctbl">
+          <thead><tr><th>Course</th><th>Students</th></tr></thead>
+          <tbody>
+            <tr><td>人生赢家顶级理气风水班 Plan A 2026</td><td>104</td></tr>
+            <tr><td>2026 财富与风水战略大会 VIP</td><td>95</td></tr>
+            <tr><td>Silver Access 2026 3in1 配套</td><td>77</td></tr>
+            <tr><td>奇門学霸会 2026</td><td>62</td></tr>
+            <tr><td>人生赢家顶级理气风水班 Plan B 2026</td><td>54</td></tr>
+            <tr><td>Gold Access 2026 4in1 配套</td><td>44</td></tr>
+            <tr><td>人生赢家顶级理气风水班 Plan C 2026</td><td>28</td></tr>
+            <tr><td>丰盛人生 Yearly</td><td>24</td></tr>
+            <tr><td>人生赢家顶级理气风水班 Plan A 2026 复习</td><td>18</td></tr>
+            <tr><td>财富觉醒 May 2026</td><td>15</td></tr>
+            <tr><td>富裕人生 2026 | 妻财子禄寿 Plan A</td><td>13</td></tr>
+            <tr><td>富裕人生 2026 | 妻财子禄寿 Plan B</td><td>12</td></tr>
+            <tr><td>能量觉醒 2026 / Awaken 2026</td><td>10</td></tr>
+            <tr><td>无限丰盛显化 Ko Samui 2026</td><td>5</td></tr>
+            <tr><td>奇門預測班 2026</td><td>5</td></tr>
+            <tr><td>人生赢家顶级理气风水班 Plan B 2026 复习</td><td>4</td></tr>
+            <tr><td>人生赢家顶级理气风水班 Plan C 2026 复习</td><td>3</td></tr>
+            <tr><td>奇門学霸会 2026 复习</td><td>2</td></tr>
+            <tr><td>Inner Circle</td><td>1</td></tr>
+            <tr><td>其他 (Other courses)</td><td>14</td></tr>
+          </tbody>
+        </table>
+        <p style="font-size:11px;color:var(--mist);margin-top:10px;">* May 2026 final figures.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- 02 CURRENT MONTH -->
+<section class="s-warm">
+<div class="inner">
+  <span class="eyebrow">02 · Current Month</span>
+  <h2 class="sec-title">May 2026 — Final</h2>
+  <div class="gold-rule"></div>
+
+  <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;margin-bottom:4px;">
+    <div>
+      <div style="font-size:10px;color:var(--mist);letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px;">Actual Total</div>
+      <div style="font-size:36px;font-weight:700;color:var(--ink);line-height:1;">RM 615,617</div>
+    </div>
+    <div style="text-align:right;">
+      <div style="font-size:10px;color:var(--mist);letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px;">Monthly Target</div>
+      <div style="font-size:20px;font-weight:700;color:var(--ink);">RM 1,000,000</div>
+    </div>
+  </div>
+  <div class="pb-wrap">
+    <div class="pb-track"><div class="pb-fill" style="width:62%;background:#378ADD;"></div></div>
+    <div class="pb-meta">
+      <span>62% achieved &nbsp;·&nbsp; 62 students closed</span>
+      <span class="hi">Gap: RM 384,383</span>
+    </div>
+  </div>
+
+  <div class="gold-divider" style="margin:28px 0 20px;"><span></span><i>◆</i><span></span></div>
+
+  <div class="team-grid">
+    <div class="team-card">
+      <div class="team-card-name">Team A · Infinity</div>
+      <div class="team-card-num">RM 448,370</div>
+      <div class="pb-wrap" style="margin:8px 0 4px;">
+        <div class="pb-track"><div class="pb-fill" style="width:100%;background:#639922;"></div></div>
+      </div>
+      <span class="team-badge" style="border-color:#639922;color:#639922;">112% ✓</span>
+      <div class="team-card-meta">Target: RM 400,000 &nbsp;·&nbsp; <span class="gap-green">Exceeded by RM 48,370</span></div>
+    </div>
+    <div class="team-card">
+      <div class="team-card-name">Team B · Guardian</div>
+      <div class="team-card-num">RM 0</div>
+      <div class="pb-wrap" style="margin:8px 0 4px;">
+        <div class="pb-track"><div class="pb-fill" style="width:0%;background:#378ADD;"></div></div>
+      </div>
+      <span class="team-badge">0%</span>
+      <div class="team-card-meta">Target: RM 200,000 &nbsp;·&nbsp; Gap: <span class="gap-red">RM 200,000</span></div>
+    </div>
+    <div class="team-card">
+      <div class="team-card-name">Team C · Abundance</div>
+      <div class="team-card-num">RM 167,248</div>
+      <div class="pb-wrap" style="margin:8px 0 4px;">
+        <div class="pb-track"><div class="pb-fill" style="width:42%;background:#378ADD;"></div></div>
+      </div>
+      <span class="team-badge">42%</span>
+      <div class="team-card-meta">Target: RM 400,000 &nbsp;·&nbsp; Gap: <span class="gap-red">RM 232,752</span></div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- 03 MONTHLY SALES -->
+<section class="s-cream">
+<div class="inner">
+  <span class="eyebrow">03 · Monthly Sales</span>
+  <h2 class="sec-title">vs. RM 1,000,000 Target</h2>
+  <div class="gold-rule"></div>
+
+  <!--
+    Static inline SVG bar chart — no JavaScript, works on all devices.
+    viewBox: 0 0 620 260
+    Plot area: left=60, right=610, top=20, bottom=190  → plotH=170, plotW=550
+    Max value = 1,200,000
+    Scale: y = 190 - (value / 1,200,000 * 170)
+      Jan 1,074,506 → y = 190 - 152 = 38   barH = 152
+      Feb   336,718 → y = 190 -  48 = 142  barH =  48
+      Mar   749,286 → y = 190 - 106 = 84   barH = 106
+      Apr   471,164 → y = 190 -  67 = 123  barH =  67
+      May   385,224 → y = 190 -  55 = 135  barH =  55
+    Target 1,000,000 → y = 190 - 142 = 48
+    Bar width = 60, gap = 50, centres: 115, 225, 335, 445, 555
+  -->
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 620 260" style="width:100%;display:block;margin-bottom:10px;" aria-label="Monthly sales bar chart">
+
+    <!-- Y grid lines + labels -->
+    <!-- RM 0 -->
+    <line x1="60" y1="190" x2="610" y2="190" stroke="#E2DDD5" stroke-width="1"/>
+    <text x="54" y="194" text-anchor="end" font-size="10" fill="#8A9BAA" font-family="system-ui,sans-serif">RM0</text>
+    <!-- RM 250K  y = 190 - (250000/1200000*170) = 190-35 = 155 -->
+    <line x1="60" y1="155" x2="610" y2="155" stroke="#E2DDD5" stroke-width="1"/>
+    <text x="54" y="159" text-anchor="end" font-size="10" fill="#8A9BAA" font-family="system-ui,sans-serif">250K</text>
+    <!-- RM 500K  y = 190 - 71 = 119 -->
+    <line x1="60" y1="119" x2="610" y2="119" stroke="#E2DDD5" stroke-width="1"/>
+    <text x="54" y="123" text-anchor="end" font-size="10" fill="#8A9BAA" font-family="system-ui,sans-serif">500K</text>
+    <!-- RM 750K  y = 190 - 106 = 84 -->
+    <line x1="60" y1="84" x2="610" y2="84" stroke="#E2DDD5" stroke-width="1"/>
+    <text x="54" y="88" text-anchor="end" font-size="10" fill="#8A9BAA" font-family="system-ui,sans-serif">750K</text>
+    <!-- RM 1M  y = 190 - 142 = 48 -->
+    <line x1="60" y1="48" x2="610" y2="48" stroke="#E2DDD5" stroke-width="1"/>
+    <text x="54" y="52" text-anchor="end" font-size="10" fill="#8A9BAA" font-family="system-ui,sans-serif">1.0M</text>
+
+    <!-- RM 1M TARGET DASHED LINE — drawn over bars so it crosses them -->
+    <line x1="60" y1="48" x2="610" y2="48" stroke="#C93C3C" stroke-width="1.5" stroke-dasharray="6,4"/>
+    <!-- Label sits inside the chart on the right, above the line -->
+    <rect x="530" y="30" width="76" height="16" fill="white" opacity="0.85" rx="2"/>
+    <text x="568" y="42" text-anchor="middle" font-size="10" fill="#C93C3C" font-weight="bold" font-family="system-ui,sans-serif">RM 1M target</text>
+
+    <!-- JAN bar: centre=115, y=38, h=152, GREEN (hit target) -->
+    <rect x="85" y="38" width="60" height="152" fill="#639922" rx="3"/>
+    <text x="115" y="32" text-anchor="middle" font-size="10" font-weight="bold" fill="#2A1E12" font-family="system-ui,sans-serif">1.07M</text>
+
+    <!-- FEB bar: centre=225, y=142, h=48, BLUE -->
+    <rect x="195" y="142" width="60" height="48" fill="#378ADD" rx="3"/>
+    <text x="225" y="136" text-anchor="middle" font-size="10" font-weight="bold" fill="#2A1E12" font-family="system-ui,sans-serif">337K</text>
+
+    <!-- MAR bar: centre=335, y=84, h=106, AMBER -->
+    <rect x="305" y="84" width="60" height="106" fill="#BA7517" rx="3"/>
+    <text x="335" y="78" text-anchor="middle" font-size="10" font-weight="bold" fill="#2A1E12" font-family="system-ui,sans-serif">749K</text>
+
+    <!-- APR bar: centre=445, y=123, h=67, BLUE -->
+    <rect x="415" y="123" width="60" height="67" fill="#378ADD" rx="3"/>
+    <text x="445" y="117" text-anchor="middle" font-size="10" font-weight="bold" fill="#2A1E12" font-family="system-ui,sans-serif">471K</text>
+
+    <!-- MAY bar: centre=555, y=103, h=87, BLUE -->
+    <rect x="525" y="103" width="60" height="87" fill="#378ADD" rx="3"/>
+    <text x="555" y="97" text-anchor="middle" font-size="10" font-weight="bold" fill="#2A1E12" font-family="system-ui,sans-serif">616K</text>
+
+    <!-- X axis line -->
+    <line x1="60" y1="190" x2="610" y2="190" stroke="#C9A84C" stroke-width="1" opacity="0.4"/>
+
+    <!-- Month labels -->
+    <text x="115" y="206" text-anchor="middle" font-size="12" font-weight="bold" fill="#2A1E12" font-family="system-ui,sans-serif">Jan</text>
+    <text x="225" y="206" text-anchor="middle" font-size="12" font-weight="bold" fill="#2A1E12" font-family="system-ui,sans-serif">Feb</text>
+    <text x="335" y="206" text-anchor="middle" font-size="12" font-weight="bold" fill="#2A1E12" font-family="system-ui,sans-serif">Mar</text>
+    <text x="445" y="206" text-anchor="middle" font-size="12" font-weight="bold" fill="#2A1E12" font-family="system-ui,sans-serif">Apr</text>
+    <text x="555" y="206" text-anchor="middle" font-size="12" font-weight="bold" fill="#2A1E12" font-family="system-ui,sans-serif">May</text>
+
+    <!-- % labels -->
+    <text x="115" y="220" text-anchor="middle" font-size="11" font-weight="bold" fill="#639922" font-family="system-ui,sans-serif">107%</text>
+    <text x="225" y="220" text-anchor="middle" font-size="11" font-weight="bold" fill="#378ADD" font-family="system-ui,sans-serif">34%</text>
+    <text x="335" y="220" text-anchor="middle" font-size="11" font-weight="bold" fill="#BA7517" font-family="system-ui,sans-serif">75%</text>
+    <text x="445" y="220" text-anchor="middle" font-size="11" font-weight="bold" fill="#378ADD" font-family="system-ui,sans-serif">47%</text>
+    <text x="555" y="220" text-anchor="middle" font-size="11" font-weight="bold" fill="#378ADD" font-family="system-ui,sans-serif">62%</text>
+
+    <!-- HIT label for Jan only -->
+    <text x="115" y="236" text-anchor="middle" font-size="9" fill="#639922" font-family="system-ui,sans-serif">✓ Hit</text>
+  </svg>
+  <div class="chart-legend">
+    <span class="leg"><span class="leg-sq" style="background:#639922;"></span>≥ 100%</span>
+    <span class="leg"><span class="leg-sq" style="background:#BA7517;"></span>70–99%</span>
+    <span class="leg"><span class="leg-sq" style="background:#378ADD;"></span>&lt; 70%</span>
+    <span class="leg"><span class="leg-dash"></span>RM 1M target</span>
+  </div>
+
+  <div class="gold-divider" style="margin:36px 0 24px;"><span></span><i>◆</i><span></span></div>
+
+  <!-- Jan -->
+  <div class="acc-wrap">
+    <input type="checkbox" id="m0">
+    <label class="acc-label" for="m0">
+      <span class="acc-lbl">Jan</span>
+      <div class="acc-bar-wrap"><div class="acc-bar-track"><div class="acc-bar-fill" style="width:100%;background:#639922;"></div></div></div>
+      <span class="acc-total">RM 1,074,506</span>
+      <span class="acc-pct" style="border-color:#639922;color:#639922;">107%</span>
+      <span class="acc-stu">192 students</span>
+      <span class="acc-arrow">▼</span>
+    </label>
+    <div class="acc-body">
+      <div class="acc-body-inner">
+        <div class="acc-teams">
+          <div class="acc-tbox"><div class="tl">Team A (Infinity)</div><div class="tv">RM 429,487</div><div class="ts">107% of RM400K</div></div>
+          <div class="acc-tbox"><div class="tl">Team B (Guardian)</div><div class="tv">RM 419,008</div><div class="ts">210% of RM200K</div></div>
+          <div class="acc-tbox"><div class="tl">Team C (Abundance)</div><div class="tv">RM 226,011</div><div class="ts">57% of RM400K</div></div>
+        </div>
+        <span class="c-label">Course Breakdown</span>
+        <table class="ctbl"><thead><tr><th>Course</th><th>Students</th></tr></thead><tbody>
+          <tr><td>2026 财富与风水战略大会 VIP</td><td>93</td></tr>
+          <tr><td>奇門学霸会 2026</td><td>51</td></tr>
+          <tr><td>Silver Access 2026 3in1 配套</td><td>19</td></tr>
+          <tr><td>Gold Access 2026 4in1 配套</td><td>10</td></tr>
+          <tr><td>能量觉醒 2026</td><td>4</td></tr>
+          <tr><td>人生赢家顶级理气风水 Plan A 2026</td><td>4</td></tr>
+          <tr><td>丰盛人生 Yearly</td><td>2</td></tr>
+          <tr><td>奇門预测班 2026</td><td>1</td></tr>
+          <tr><td>人生赢家顶级理气风水 Plan B 2026</td><td>1</td></tr>
+          <tr><td>其他 (Other)</td><td>7</td></tr>
+        </tbody></table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Feb -->
+  <div class="acc-wrap">
+    <input type="checkbox" id="m1">
+    <label class="acc-label" for="m1">
+      <span class="acc-lbl">Feb</span>
+      <div class="acc-bar-wrap"><div class="acc-bar-track"><div class="acc-bar-fill" style="width:34%;background:#378ADD;"></div></div></div>
+      <span class="acc-total">RM 336,718</span>
+      <span class="acc-pct" style="border-color:#378ADD;color:#378ADD;">34%</span>
+      <span class="acc-stu">65 students</span>
+      <span class="acc-arrow">▼</span>
+    </label>
+    <div class="acc-body">
+      <div class="acc-body-inner">
+        <div class="acc-teams">
+          <div class="acc-tbox"><div class="tl">Team A (Infinity)</div><div class="tv">RM 172,091</div><div class="ts">43% of RM400K</div></div>
+          <div class="acc-tbox"><div class="tl">Team B (Guardian)</div><div class="tv">RM 95,769</div><div class="ts">48% of RM200K</div></div>
+          <div class="acc-tbox"><div class="tl">Team C (Abundance)</div><div class="tv">RM 68,858</div><div class="ts">17% of RM400K</div></div>
+        </div>
+        <span class="c-label">Course Breakdown</span>
+        <table class="ctbl"><thead><tr><th>Course</th><th>Students</th></tr></thead><tbody>
+          <tr><td>Gold Access 2026 4in1 配套</td><td>14</td></tr>
+          <tr><td>Silver Access 2026 3in1 配套</td><td>12</td></tr>
+          <tr><td>奇門学霸会 2026</td><td>10</td></tr>
+          <tr><td>丰盛人生 Yearly</td><td>10</td></tr>
+          <tr><td>能量觉醒 2026</td><td>6</td></tr>
+          <tr><td>奇門預測班 2026</td><td>4</td></tr>
+          <tr><td>人生赢家顶级理气风水 Plan C 2026</td><td>2</td></tr>
+          <tr><td>2026 财富与风水战略大会 VIP</td><td>2</td></tr>
+          <tr><td>其他 (Other)</td><td>5</td></tr>
+        </tbody></table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mar -->
+  <div class="acc-wrap">
+    <input type="checkbox" id="m2">
+    <label class="acc-label" for="m2">
+      <span class="acc-lbl">Mar</span>
+      <div class="acc-bar-wrap"><div class="acc-bar-track"><div class="acc-bar-fill" style="width:75%;background:#BA7517;"></div></div></div>
+      <span class="acc-total">RM 749,286</span>
+      <span class="acc-pct" style="border-color:#BA7517;color:#BA7517;">75%</span>
+      <span class="acc-stu">197 students</span>
+      <span class="acc-arrow">▼</span>
+    </label>
+    <div class="acc-body">
+      <div class="acc-body-inner">
+        <div class="acc-teams">
+          <div class="acc-tbox"><div class="tl">Team A (Infinity)</div><div class="tv">RM 338,110</div><div class="ts">85% of RM400K</div></div>
+          <div class="acc-tbox"><div class="tl">Team B (Guardian)</div><div class="tv">RM 174,598</div><div class="ts">87% of RM200K</div></div>
+          <div class="acc-tbox"><div class="tl">Team C (Abundance)</div><div class="tv">RM 236,577</div><div class="ts">59% of RM400K</div></div>
+        </div>
+        <span class="c-label">Course Breakdown</span>
+        <table class="ctbl"><thead><tr><th>Course</th><th>Students</th></tr></thead><tbody>
+          <tr><td>人生赢家顶级理气风水班 Plan A 2026</td><td>48</td></tr>
+          <tr><td>Silver Access 2026 3in1 配套</td><td>46</td></tr>
+          <tr><td>人生赢家顶级理气风水班 Plan B 2026</td><td>35</td></tr>
+          <tr><td>Gold Access 2026 4in1 配套</td><td>20</td></tr>
+          <tr><td>人生赢家顶级理气风水班 Plan C 2026</td><td>18</td></tr>
+          <tr><td>人生赢家顶级理气风水班 Plan A 2026 复习</td><td>8</td></tr>
+          <tr><td>能量觉醒 Awaken 2026</td><td>4</td></tr>
+          <tr><td>丰盛人生 Yearly</td><td>6</td></tr>
+          <tr><td>其他 (Other)</td><td>12</td></tr>
+        </tbody></table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Apr -->
+  <div class="acc-wrap">
+    <input type="checkbox" id="m3">
+    <label class="acc-label" for="m3">
+      <span class="acc-lbl">Apr</span>
+      <div class="acc-bar-wrap"><div class="acc-bar-track"><div class="acc-bar-fill" style="width:47%;background:#378ADD;"></div></div></div>
+      <span class="acc-total">RM 471,164</span>
+      <span class="acc-pct" style="border-color:#378ADD;color:#378ADD;">47%</span>
+      <span class="acc-stu">94 students</span>
+      <span class="acc-arrow">▼</span>
+    </label>
+    <div class="acc-body">
+      <div class="acc-body-inner">
+        <div class="acc-teams">
+          <div class="acc-tbox"><div class="tl">Team A (Infinity)</div><div class="tv">RM 216,943</div><div class="ts">54% of RM400K</div></div>
+          <div class="acc-tbox"><div class="tl">Team B (Guardian)</div><div class="tv">RM 120,759</div><div class="ts">60% of RM200K</div></div>
+          <div class="acc-tbox"><div class="tl">Team C (Abundance)</div><div class="tv">RM 133,462</div><div class="ts">33% of RM400K</div></div>
+        </div>
+        <span class="c-label">Course Breakdown</span>
+        <table class="ctbl"><thead><tr><th>Course</th><th>Students</th></tr></thead><tbody>
+          <tr><td>人生赢家顶级理气风水班 Plan A 2026</td><td>44</td></tr>
+          <tr><td>人生赢家顶级理气风水班 Plan B 2026</td><td>13</td></tr>
+          <tr><td>人生赢家顶级理气风水班 Plan A 2026 复习</td><td>10</td></tr>
+          <tr><td>人生赢家顶级理气风水班 Plan C 2026</td><td>8</td></tr>
+          <tr><td>财富觉醒 May 2026</td><td>6</td></tr>
+          <tr><td>丰盛人生 Yearly</td><td>6</td></tr>
+          <tr><td>能量觉醒 Awaken 2026</td><td>3</td></tr>
+          <tr><td>其他 (Other)</td><td>4</td></tr>
+        </tbody></table>
+      </div>
+    </div>
+  </div>
+
+  <!-- May -->
+  <div class="acc-wrap">
+    <input type="checkbox" id="m4">
+    <label class="acc-label" for="m4">
+      <span class="acc-lbl">May</span>
+      <div class="acc-bar-wrap"><div class="acc-bar-track"><div class="acc-bar-fill" style="width:62%;background:#378ADD;"></div></div></div>
+      <span class="acc-total">RM 615,617</span>
+      <span class="acc-pct" style="border-color:#378ADD;color:#378ADD;">62%</span>
+      <span class="acc-stu">62 students</span>
+      <span class="acc-arrow">▼</span>
+    </label>
+    <div class="acc-body">
+      <div class="acc-body-inner">
+        <div class="acc-teams">
+          <div class="acc-tbox"><div class="tl">Team A (Infinity)</div><div class="tv">RM 448,370</div><div class="ts">112% of RM400K</div></div>
+          <div class="acc-tbox"><div class="tl">Team B (Guardian)</div><div class="tv">RM 0</div><div class="ts">0% of RM200K</div></div>
+          <div class="acc-tbox"><div class="tl">Team C (Abundance)</div><div class="tv">RM 167,248</div><div class="ts">42% of RM400K</div></div>
+        </div>
+        <span class="c-label">Course Breakdown</span>
+        <table class="ctbl"><thead><tr><th>Course</th><th>Students</th></tr></thead><tbody>
+          <tr><td>富裕人生 2026 | 妻财子禄寿 Plan A</td><td>13</td></tr>
+          <tr><td>富裕人生 2026 | 妻财子禄寿 Plan B</td><td>12</td></tr>
+          <tr><td>人生赢家顶级理气风水班 Plan A 2026</td><td>12</td></tr>
+          <tr><td>财富觉醒 May 2026</td><td>9</td></tr>
+          <tr><td>人生赢家顶级理气风水班 Plan B 2026</td><td>6</td></tr>
+          <tr><td>无限丰盛显化 Ko Samui 2026</td><td>5</td></tr>
+          <tr><td>丰盛人生 Yearly</td><td>3</td></tr>
+          <tr><td>人生赢家顶级理气风水班 Plan C 2026</td><td>2</td></tr>
+        </tbody></table>
+      </div>
+    </div>
+  </div>
+
+</div>
+</section>
+
+<!-- FOOTER -->
+<section class="footer-section">
+  <p class="fg">Scale Team Sales Dashboard 2026</p>
+  <p>Guardian Venture &nbsp;·&nbsp; All figures in MYR</p>
+  <p>Data source: Scale Team Sales Google Sheet</p>
+  <div class="cover-divider" style="margin:20px auto;"><span></span><i>◆</i><span></span></div>
+  <p>Updated to May 2026</p>
+</section>
+
+</body>
+</html>
