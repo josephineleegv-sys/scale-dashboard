@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scale Team Sales Dashboard 2026 · Live</title>
+<style>
+:root {
+  --gold: #C9A84C; --gold-light: #E8C96B; --gold-pale: #F5E8C0;
+  --ink: #0F0C07; --ink-mid: #1A1510; --ink-soft: #2A1E12;
+  --cream: #FAF7F0; --cream-warm: #F3EAD8;
+  --mist: #8A9BAA; --red: #C93C3C; --green: #3a7c0a;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--cream);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',Arial,sans-serif;font-size:15px;line-height:1.7;-webkit-font-smoothing:antialiased;}
+.inner{max-width:680px;margin:0 auto;padding:60px 28px;}
+.s-cream{background:var(--cream);}
+.s-warm{background:var(--cream-warm);}
+.s-dark{background:var(--ink-mid);color:#fff;}
+.s-ink{background:var(--ink);color:#fff;}
+.cover{min-height:45vw;max-height:360px;background:var(--ink);display:flex;align-items:center;justify-content:center;text-align:center;padding:48px 28px;position:relative;overflow:hidden;}
+.cover::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 100%,rgba(201,168,76,.12),transparent);}
+.cover-eyebrow{font-size:11px;letter-spacing:.45em;color:var(--gold);text-transform:uppercase;display:block;margin-bottom:18px;position:relative;z-index:1;}
+.cover-title{font-size:clamp(26px,5vw,42px);font-weight:700;color:#fff;line-height:1.15;letter-spacing:.02em;position:relative;z-index:1;margin-bottom:10px;}
+.cover-title em{color:var(--gold-light);font-style:normal;}
+.cover-sub{font-size:13px;color:rgba(255,255,255,.5);letter-spacing:.12em;position:relative;z-index:1;margin-top:18px;}
+.cover-divider{display:flex;align-items:center;gap:10px;margin:16px auto;width:120px;position:relative;z-index:1;}
+.cover-divider span{flex:1;height:1px;background:rgba(201,168,76,.3);}
+.cover-divider i{color:var(--gold);font-style:normal;font-size:9px;}
+.eyebrow{font-size:10px;font-weight:600;letter-spacing:.5em;color:var(--gold);text-transform:uppercase;display:block;margin-bottom:14px;}
+.sec-title{font-size:clamp(22px,4vw,32px);font-weight:700;line-height:1.2;margin-bottom:6px;letter-spacing:.01em;}
+.s-dark .sec-title,.s-ink .sec-title{color:#fff;}
+.gold-rule{width:48px;height:2px;background:var(--gold);margin:14px 0 36px;}
+.big-card{background:var(--ink);padding:36px 38px;margin:0 0 10px;position:relative;overflow:hidden;}
+.big-card::after{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:linear-gradient(to bottom,var(--gold),transparent);}
+.big-card-label{font-size:11px;letter-spacing:.3em;color:var(--gold);display:block;margin-bottom:8px;text-transform:uppercase;}
+.big-card-num{font-size:clamp(28px,5vw,40px);font-weight:700;color:#fff;line-height:1;margin-bottom:4px;}
+.big-card-sub{font-size:12px;color:rgba(255,255,255,.4);letter-spacing:.08em;}
+.pb-wrap{margin:20px 0 6px;}
+.pb-track{background:rgba(255,255,255,.1);border-radius:99px;height:8px;overflow:hidden;}
+.s-cream .pb-track,.s-warm .pb-track{background:rgba(0,0,0,.1);}
+.pb-fill{height:8px;border-radius:99px;}
+.pb-meta{display:flex;justify-content:space-between;font-size:12px;color:rgba(255,255,255,.45);margin-top:6px;}
+.s-cream .pb-meta,.s-warm .pb-meta{color:var(--mist);}
+.pb-meta .hi{color:var(--gold-light);font-weight:600;}
+.s-cream .pb-meta .hi,.s-warm .pb-meta .hi{color:var(--red);font-weight:600;}
+.kpi-row{display:flex;gap:8px;flex-wrap:wrap;margin:24px 0 0;}
+.kpi{flex:1;min-width:140px;background:rgba(255,255,255,.05);border:1px solid rgba(201,168,76,.15);padding:16px 18px;border-radius:2px;}
+.s-cream .kpi,.s-warm .kpi{background:rgba(0,0,0,.03);border:1px solid rgba(201,168,76,.2);}
+.kpi-l{font-size:10px;color:rgba(255,255,255,.4);letter-spacing:.08em;text-transform:uppercase;margin-bottom:5px;}
+.s-cream .kpi-l,.s-warm .kpi-l{color:var(--mist);}
+.kpi-v{font-size:18px;font-weight:700;color:#fff;}
+.s-cream .kpi-v,.s-warm .kpi-v{color:var(--ink);}
+.kpi-v.red{color:#E87070;}
+.s-cream .kpi-v.red,.s-warm .kpi-v.red{color:var(--red);}
+.team-grid{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 10px;}
+.team-card{flex:1;min-width:180px;border:1px solid rgba(201,168,76,.2);padding:20px 22px;background:var(--cream);}
+.team-card-name{font-size:12px;font-weight:600;letter-spacing:.08em;color:var(--ink-soft);text-transform:uppercase;margin-bottom:4px;}
+.team-card-num{font-size:22px;font-weight:700;color:var(--ink);margin-bottom:10px;line-height:1;}
+.team-card-meta{font-size:11px;color:var(--mist);margin-top:6px;}
+.team-card-meta .gap-red{color:var(--red);font-weight:600;}
+.team-card-meta .gap-green{color:var(--green);font-weight:600;}
+.team-badge{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;letter-spacing:.04em;border:1px solid var(--gold);color:var(--gold);margin-bottom:10px;}
+.acc-wrap{margin:0 0 4px;}
+.acc-wrap input[type="checkbox"]{display:none;}
+.acc-label{display:flex;align-items:center;gap:10px;padding:11px 16px;background:rgba(201,168,76,.06);border:1px solid rgba(201,168,76,.15);cursor:pointer;user-select:none;transition:background .15s;}
+.acc-label:hover{background:rgba(201,168,76,.12);}
+.acc-lbl{font-size:13px;font-weight:700;min-width:38px;color:var(--ink);}
+.s-dark .acc-lbl,.s-ink .acc-lbl{color:#fff;}
+.acc-bar-wrap{flex:1;max-width:180px;}
+.acc-bar-track{background:rgba(0,0,0,.1);border-radius:99px;height:5px;overflow:hidden;}
+.s-dark .acc-bar-track,.s-ink .acc-bar-track{background:rgba(255,255,255,.1);}
+.acc-bar-fill{height:5px;border-radius:99px;}
+.acc-total{font-size:13px;font-weight:700;white-space:nowrap;color:var(--ink);}
+.s-dark .acc-total,.s-ink .acc-total{color:#fff;}
+.acc-pct{font-size:10px;font-weight:700;padding:2px 7px;border:1px solid;white-space:nowrap;}
+.acc-stu{font-size:11px;color:var(--mist);white-space:nowrap;}
+.acc-arrow{font-size:10px;color:var(--mist);margin-left:auto;flex-shrink:0;transition:transform .2s;display:inline-block;}
+.acc-body{max-height:0;overflow:hidden;transition:max-height .3s ease;background:var(--cream-warm);border:1px solid rgba(201,168,76,.15);border-top:none;}
+.acc-wrap input:checked~.acc-body{max-height:1200px;}
+.acc-wrap input:checked~.acc-label .acc-arrow{transform:rotate(180deg);}
+.acc-body-inner{padding:18px 18px 20px;}
+.acc-teams{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px;}
+.acc-tbox{flex:1;min-width:140px;background:rgba(0,0,0,.04);border:1px solid rgba(201,168,76,.12);padding:12px 14px;}
+.acc-tbox .tl{font-size:10px;color:var(--mist);letter-spacing:.05em;text-transform:uppercase;margin-bottom:3px;}
+.acc-tbox .tv{font-size:14px;font-weight:700;color:var(--ink);}
+.acc-tbox .ts{font-size:10px;color:var(--mist);margin-top:1px;}
+.c-label{font-size:10px;letter-spacing:.35em;color:var(--gold);text-transform:uppercase;display:block;margin-bottom:10px;}
+table.ctbl{width:100%;border-collapse:collapse;}
+table.ctbl thead th{font-size:10px;color:var(--mist);letter-spacing:.06em;text-transform:uppercase;text-align:left;padding:0 0 8px;border-bottom:1px solid rgba(201,168,76,.2);}
+table.ctbl thead th:last-child{text-align:right;}
+table.ctbl tbody td{font-size:13px;color:var(--ink-soft);padding:7px 0;border-bottom:1px solid rgba(0,0,0,.05);vertical-align:top;line-height:1.45;}
+table.ctbl tbody tr:last-child td{border-bottom:none;}
+table.ctbl tbody td:last-child{text-align:right;font-weight:700;color:var(--gold);white-space:nowrap;padding-left:12px;min-width:30px;}
+.reg-wrap input[type="checkbox"]{display:none;}
+.reg-label{display:flex;align-items:center;justify-content:space-between;margin-top:20px;padding:13px 16px;background:rgba(201,168,76,.07);border:1px solid rgba(201,168,76,.2);cursor:pointer;user-select:none;transition:background .15s;}
+.reg-label:hover{background:rgba(201,168,76,.13);}
+.reg-wrap input:checked~.reg-label{background:rgba(201,168,76,.13);}
+.reg-label-left{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.reg-label-title{font-size:13px;font-weight:700;color:#fff;}
+.reg-badge{font-size:10px;font-weight:700;padding:2px 8px;letter-spacing:.04em;border:1px solid var(--gold);color:var(--gold);}
+.reg-arrow{font-size:10px;color:var(--mist);transition:transform .2s;display:inline-block;}
+.reg-wrap input:checked~.reg-label .reg-arrow{transform:rotate(180deg);}
+.reg-panel{max-height:0;overflow:hidden;transition:max-height .4s ease;background:var(--cream-warm);border:1px solid rgba(201,168,76,.15);border-top:none;}
+.reg-wrap input:checked~.reg-panel{max-height:2000px;}
+.reg-panel-inner{padding:20px 20px 22px;}
+.reg-month-row{display:flex;gap:6px;margin-bottom:18px;flex-wrap:wrap;}
+.reg-mbox{flex:1;min-width:72px;text-align:center;background:rgba(0,0,0,.04);border:1px solid rgba(201,168,76,.12);padding:8px 6px;}
+.reg-mbox .ml{font-size:10px;color:var(--mist);margin-bottom:2px;}
+.reg-mbox .mv{font-size:15px;font-weight:700;color:var(--ink);}
+.chart-legend{display:flex;flex-wrap:wrap;gap:12px;font-size:11px;color:var(--mist);margin-top:8px;}
+.leg{display:flex;align-items:center;gap:5px;}
+.leg-sq{width:9px;height:9px;flex-shrink:0;}
+.leg-dash{width:18px;border-top:2px dashed var(--red);flex-shrink:0;}
+.gold-divider{display:flex;align-items:center;gap:12px;margin:0 0 32px;}
+.gold-divider span{flex:1;height:1px;background:rgba(201,168,76,.25);}
+.gold-divider i{color:var(--gold);font-style:normal;font-size:9px;}
+.footer-section{background:var(--ink);padding:40px 28px;text-align:center;}
+.footer-section p{font-size:11px;color:rgba(255,255,255,.3);letter-spacing:.12em;line-height:2;}
+.footer-section .fg{color:var(--gold);}
+/* Live additions */
+.refresh-btn{display:inline-block;margin-top:16px;font-size:11px;font-weight:700;padding:6px 18px;letter-spacing:.08em;border:1px solid var(--gold);color:var(--gold);background:transparent;cursor:pointer;font-family:inherit;transition:background .15s;position:relative;z-index:1;}
+.refresh-btn:hover{background:rgba(201,168,76,.12);}
+.loading-msg{text-align:center;padding:80px 28px;font-size:13px;color:var(--mist);letter-spacing:.08em;}
+.err-msg{text-align:center;padding:40px 28px;font-size:13px;color:var(--red);}
+.person-row{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid rgba(201,168,76,.08);}
+.person-row:last-child{border-bottom:none;}
+.person-rank{font-size:11px;font-weight:700;color:var(--gold);min-width:22px;}
+.person-name{font-size:13px;font-weight:700;flex:1;min-width:80px;}
+.person-bar-wrap{flex:2;min-width:40px;}
+.person-bar-track{background:rgba(255,255,255,.1);border-radius:99px;height:5px;overflow:hidden;}
+.s-cream .person-bar-track{background:rgba(0,0,0,.08);}
+.person-bar-fill{height:5px;border-radius:99px;background:var(--gold);}
+.person-amt{font-size:13px;font-weight:700;white-space:nowrap;}
+.person-meta{font-size:10px;color:rgba(255,255,255,.35);white-space:nowrap;}
+.s-cream .person-meta{color:var(--mist);}
+.team-tag{font-size:9px;padding:1px 5px;border:1px solid rgba(201,168,76,.4);color:var(--gold);margin-left:4px;vertical-align:middle;}
+</style>
+</head>
+<body>
+
+<section class="cover">
+  <div class="inner" style="padding:0;text-align:center;position:relative;z-index:1;">
+    <span class="cover-eyebrow">Guardian Venture · Scale Team</span>
+    <h1 class="cover-title">Sales Dashboard <em>2026</em></h1>
+    <div class="cover-divider"><span></span><i>◆</i><span></span></div>
+    <p class="cover-sub" id="cover-sub">All figures in MYR &nbsp;·&nbsp; Loading…</p>
+    <div style="display:flex;gap:8px;justify-content:center;margin-top:20px;flex-wrap:wrap;">
+      <span style="font-size:10px;font-weight:700;padding:3px 10px;border:1px solid rgba(201,168,76,.5);color:var(--gold);letter-spacing:.05em;">A · INFINITY</span>
+      <span style="font-size:10px;font-weight:700;padding:3px 10px;border:1px solid rgba(201,168,76,.5);color:var(--gold);letter-spacing:.05em;">B · GUARDIAN</span>
+      <span style="font-size:10px;font-weight:700;padding:3px 10px;border:1px solid rgba(201,168,76,.5);color:var(--gold);letter-spacing:.05em;">C · ABUNDANCE</span>
+    </div>
+    <button class="refresh-btn" onclick="init()">↻ Refresh Data</button>
+  </div>
+</section>
+
+<div id="dashboard">
+  <div class="loading-msg">正在读取 Google Sheets 数据…</div>
+</div>
+
+<section class="footer-section">
+  <p class="fg">Scale Team Sales Dashboard 2026</p>
+  <p>Guardian Venture &nbsp;·&nbsp; All figures in MYR</p>
+  <p>Data source: Scale Team Sales Google Sheet</p>
+  <div class="cover-divider" style="margin:20px auto;"><span></span><i>◆</i><span></span></div>
+  <p id="footer-updated">Loading…</p>
+</section>
+
+<script>
+const SHEET_ID = '1zGOwh19tokN7qloOpR7uIkHT_e-LXUNx625JDXc3v3M';
+const YEARLY_TARGET = 12000000;
+const MONTHLY_TARGET = 1000000;
+const TEAM_TARGETS = { A: 400000, B: 200000, C: 400000 };
+const TEAM_NAMES   = { A: 'Infinity', B: 'Guardian', C: 'Abundance' };
+const ALL_MONTHS   = [
+  'January 2026','February 2026','March 2026',
+  'April 2026','May 2026','June 2026',
+  'July 2026','August 2026','September 2026',
+  'October 2026','November 2026','December 2026'
+];
+
+/* ── CSV parser ── */
+function parseCSV(text) {
+  const rows = [];
+  let row = [], field = '', inQ = false;
+  for (let i = 0; i <= text.length; i++) {
+    const c = text[i];
+    if (c === undefined) { row.push(field.trim()); if (row.some(v=>v)) rows.push(row); break; }
+    if (c === '"') {
+      if (inQ && text[i+1] === '"') { field += '"'; i++; } else inQ = !inQ;
+    } else if (c === ',' && !inQ) {
+      row.push(field.trim()); field = '';
+    } else if ((c === '\n' || c === '\r') && !inQ) {
+      if (c === '\r' && text[i+1] === '\n') i++;
+      row.push(field.trim()); field = '';
+      if (row.some(v=>v)) rows.push(row);
+      row = [];
+    } else { field += c; }
+  }
+  return rows;
+}
+
+/* ── Formatting ── */
+function fmt(n)  { return 'RM ' + Math.round(n).toLocaleString('en-MY'); }
+function fmtK(n) {
+  if (n >= 1000000) return (n/1000000).toFixed(2)+'M';
+  if (n >= 1000)    return Math.round(n/1000)+'K';
+  return Math.round(n).toString();
+}
+function pct(a,b)  { return b ? Math.round(a/b*100) : 0; }
+function pctColor(p) {
+  return p >= 100 ? '#639922' : p >= 70 ? '#BA7517' : '#378ADD';
+}
+function esc(s) {
+  return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+/* ── Team normaliser ── */
+function teamKey(t) {
+  if (!t) return '?';
+  const s = t.trim().toUpperCase();
+  if (s === 'A' || s.includes('INFINITY'))  return 'A';
+  if (s === 'B' || s.includes('GUARDIAN'))  return 'B';
+  if (s === 'C' || s.includes('ABUNDANCE')) return 'C';
+  return s.charAt(0) || '?';
+}
+
+function parseAmount(s) {
+  if (!s) return 0;
+  const n = parseFloat(s.replace(/[^0-9.]/g,''));
+  return isNaN(n) ? 0 : n;
+}
+
+/* ── Fetch one sheet tab as CSV ── */
+async function fetchSheet(sheetName) {
+  const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(sheetName)}`;
+  const r = await fetch(url, { cache: 'no-store' });
+  if (!r.ok) throw new Error(`HTTP ${r.status} for "${sheetName}"`);
+  return r.text();
+}
+
+/* ── Load all months ── */
+async function loadData() {
+  const monthData = {};
+  for (const month of ALL_MONTHS) {
+    try {
+      const csv  = await fetchSheet(month);
+      const rows = parseCSV(csv);
+      if (rows.length < 2) continue;
+
+      const header = rows[0].map(h => (h||'').toLowerCase().trim());
+      // Detect if first row is a header or data (data rows start with an email-like string)
+      const firstRowIsData = header[0].includes('@') || /^\d/.test(header[0]);
+      const ci = {
+        team:   header.findIndex(h => h === 'team'),
+        setter: header.findIndex(h => h === 'setter'),
+        closer: header.findIndex(h => h === 'closer'),
+        cls:    header.findIndex(h => h === 'class'),
+        amount: header.findIndex(h => h.includes('amount') && h.includes('myr')),
+      };
+      if (ci.team   < 0) ci.team   = 3;
+      if (ci.setter < 0) ci.setter = 4;
+      if (ci.closer < 0) ci.closer = 5;
+      if (ci.cls    < 0) ci.cls    = 6;
+      if (ci.amount < 0) ci.amount = 11;
+      const dataRows = firstRowIsData ? rows : rows.slice(1);
+
+      const d = {
+        total:0, students:0,
+        teams:   { A:{total:0,students:0}, B:{total:0,students:0}, C:{total:0,students:0} },
+        courses: {},
+        closers: {},
+        setters: {},
+      };
+
+      for (const row of dataRows) {
+        const amount = parseAmount(row[ci.amount]);
+        if (!amount) continue;
+        const team   = teamKey(row[ci.team]);
+        const closer = (row[ci.closer]||'').trim();
+        const setter = (row[ci.setter]||'').trim();
+        const course = (row[ci.cls]||'').trim();
+
+        d.total    += amount;
+        d.students += 1;
+        if (d.teams[team]) { d.teams[team].total += amount; d.teams[team].students++; }
+        if (course) {
+          if (!d.courses[course]) d.courses[course] = {students:0,amount:0};
+          d.courses[course].students++; d.courses[course].amount += amount;
+        }
+        if (closer) {
+          if (!d.closers[closer]) d.closers[closer] = {total:0,students:0,team};
+          d.closers[closer].total += amount; d.closers[closer].students++;
+        }
+        if (setter && setter !== closer) {
+          if (!d.setters[setter]) d.setters[setter] = {total:0,students:0,team};
+          d.setters[setter].total += amount; d.setters[setter].students++;
+        }
+      }
+      if (d.total > 0) monthData[month] = d;
+    } catch(e) { console.warn(`Skip ${month}:`, e.message); }
+  }
+  return monthData;
+}
+
+/* ── HTML helpers ── */
+function pbTrack(val, target, color) {
+  const p = Math.min(pct(val,target), 100);
+  return `<div class="pb-track"><div class="pb-fill" style="width:${p}%;background:${color};"></div></div>`;
+}
+
+/* ── 01 Yearly Overview ── */
+function renderYearly(months, monthData) {
+  let total = 0, students = 0;
+  months.forEach(m => { total += monthData[m].total; students += monthData[m].students; });
+  const yPct    = pct(total, YEARLY_TARGET);
+  const rem     = YEARLY_TARGET - total;
+  const avgSoFar= total / months.length;
+  const mLeft   = 12 - months.length;
+  const reqAvg  = mLeft > 0 ? rem / mLeft : 0;
+  const uplift  = Math.max(0, reqAvg - avgSoFar);
+  const lastM   = months[months.length-1].split(' ')[0];
+  const lastMSh = lastM.slice(0,3);
+
+  // Course totals
+  const allCourses = {};
+  months.forEach(m => {
+    Object.entries(monthData[m].courses).forEach(([c,d]) => {
+      if (!allCourses[c]) allCourses[c] = 0;
+      allCourses[c] += d.students;
+    });
+  });
+  const sortedC = Object.entries(allCourses).sort((a,b)=>b[1]-a[1]);
+
+  const monthBoxes = months.map(m => {
+    const s = m.split(' ')[0].slice(0,3);
+    return `<div class="reg-mbox"><div class="ml">${s}</div><div class="mv">${monthData[m].students}</div></div>`;
+  }).join('');
+
+  return `<section class="s-ink"><div class="inner">
+    <span class="eyebrow">01 · Yearly Overview</span>
+    <h2 class="sec-title">Jan – ${lastM} 2026</h2>
+    <div class="gold-rule"></div>
+    <div class="big-card">
+      <span class="big-card-label">Actual Total</span>
+      <div class="big-card-num">${fmt(total)}</div>
+      <div class="big-card-sub">Annual Target: ${fmt(YEARLY_TARGET)}</div>
+      <div class="pb-wrap">
+        ${pbTrack(total, YEARLY_TARGET, 'var(--gold)')}
+        <div class="pb-meta">
+          <span>${yPct}% of yearly target &nbsp;·&nbsp; ${students} students closed</span>
+          <span class="hi">Remaining: ${fmt(rem)}</span>
+        </div>
+      </div>
+    </div>
+    <div class="kpi-row">
+      <div class="kpi"><div class="kpi-l">Months Remaining</div><div class="kpi-v">${mLeft} months</div></div>
+      <div class="kpi"><div class="kpi-l">Required Avg (${lastMSh}–Dec)</div><div class="kpi-v red">${fmt(reqAvg)}</div></div>
+      <div class="kpi"><div class="kpi-l">Avg So Far (Jan–${lastMSh})</div><div class="kpi-v">${fmt(avgSoFar)}</div></div>
+      <div class="kpi"><div class="kpi-l">Monthly Uplift Needed</div><div class="kpi-v red">${fmt(uplift)}</div></div>
+    </div>
+    <div class="reg-wrap">
+      <input type="checkbox" id="reg-toggle">
+      <label class="reg-label" for="reg-toggle">
+        <div class="reg-label-left">
+          <span class="reg-label-title">Total Course Registrations — Jan to ${lastM} 2026</span>
+          <span class="reg-badge">${students} students</span>
+        </div>
+        <span class="reg-arrow">▼</span>
+      </label>
+      <div class="reg-panel"><div class="reg-panel-inner">
+        <div class="reg-month-row">${monthBoxes}</div>
+        <span class="c-label">Course Breakdown — Jan to ${lastM} Combined</span>
+        <table class="ctbl"><thead><tr><th>Course</th><th>Students</th></tr></thead><tbody>
+          ${sortedC.map(([c,n])=>`<tr><td>${esc(c)}</td><td>${n}</td></tr>`).join('')}
+        </tbody></table>
+      </div></div>
+    </div>
+  </div></section>`;
+}
+
+/* ── 02 Current Month ── */
+function renderCurrentMonth(month, data) {
+  const p     = pct(data.total, MONTHLY_TARGET);
+  const color = pctColor(p);
+  const gap   = Math.max(0, MONTHLY_TARGET - data.total);
+  const shortM= month.split(' ')[0];
+
+  const teamCards = ['A','B','C'].map(k => {
+    const t  = data.teams[k];
+    const tp = pct(t.total, TEAM_TARGETS[k]);
+    const tc = pctColor(tp);
+    const tg = TEAM_TARGETS[k] - t.total;
+    return `<div class="team-card">
+      <div class="team-card-name">Team ${k} · ${TEAM_NAMES[k]}</div>
+      <div class="team-card-num">${fmt(t.total)}</div>
+      <div class="pb-wrap" style="margin:8px 0 4px;">${pbTrack(t.total, TEAM_TARGETS[k], tc)}</div>
+      <span class="team-badge" style="${tp>=100?'border-color:#639922;color:#639922;':''}">${tp}%${tp>=100?' ✓':''}</span>
+      <div class="team-card-meta">Target: ${fmt(TEAM_TARGETS[k])} &nbsp;·&nbsp;
+        ${tg<=0
+          ? `<span class="gap-green">Exceeded by ${fmt(-tg)}</span>`
+          : `Gap: <span class="gap-red">${fmt(tg)}</span>`}
+      </div>
+    </div>`;
+  }).join('');
+
+  return `<section class="s-warm"><div class="inner">
+    <span class="eyebrow">02 · Current Month</span>
+    <h2 class="sec-title">${shortM} 2026</h2>
+    <div class="gold-rule"></div>
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;margin-bottom:4px;">
+      <div>
+        <div style="font-size:10px;color:var(--mist);letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px;">Actual Total</div>
+        <div style="font-size:36px;font-weight:700;color:var(--ink);line-height:1;">${fmt(data.total)}</div>
+      </div>
+      <div style="text-align:right;">
+        <div style="font-size:10px;color:var(--mist);letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px;">Monthly Target</div>
+        <div style="font-size:20px;font-weight:700;color:var(--ink);">${fmt(MONTHLY_TARGET)}</div>
+      </div>
+    </div>
+    <div class="pb-wrap">
+      ${pbTrack(data.total, MONTHLY_TARGET, color)}
+      <div class="pb-meta">
+        <span>${p}% achieved &nbsp;·&nbsp; ${data.students} students closed</span>
+        <span class="hi">Gap: ${fmt(gap)}</span>
+      </div>
+    </div>
+    <div class="gold-divider" style="margin:28px 0 20px;"><span></span><i>◆</i><span></span></div>
+    <div class="team-grid">${teamCards}</div>
+  </div></section>`;
+}
+
+/* ── 03 Salesperson Performance ── */
+function renderSalesperson(months, monthData) {
+  const closers = {}, setters = {};
+  months.forEach(m => {
+    Object.entries(monthData[m].closers).forEach(([n,d]) => {
+      if (!closers[n]) closers[n] = {total:0,students:0,team:d.team};
+      closers[n].total += d.total; closers[n].students += d.students;
+    });
+    Object.entries(monthData[m].setters).forEach(([n,d]) => {
+      if (!setters[n]) setters[n] = {total:0,students:0,team:d.team};
+      setters[n].total += d.total; setters[n].students += d.students;
+    });
+  });
+
+  const sc = Object.entries(closers).sort((a,b)=>b[1].total-a[1].total);
+  const ss = Object.entries(setters).sort((a,b)=>b[1].total-a[1].total);
+  const maxC = sc[0]?.[1].total || 1;
+  const maxS = ss[0]?.[1].total || 1;
+  const lastM = months[months.length-1].split(' ')[0];
+
+  function rows(sorted, max) {
+    return sorted.map(([name,d],i) => {
+      const bp = Math.round(d.total/max*100);
+      const tag = (d.team && d.team!=='?') ? `<span class="team-tag">${d.team}</span>` : '';
+      return `<div class="person-row">
+        <span class="person-rank">#${i+1}</span>
+        <span class="person-name">${esc(name)}${tag}</span>
+        <div class="person-bar-wrap"><div class="person-bar-track"><div class="person-bar-fill" style="width:${bp}%;"></div></div></div>
+        <span class="person-amt">${fmt(d.total)}</span>
+        <span class="person-meta">${d.students} deals</span>
+      </div>`;
+    }).join('');
+  }
+
+  return `<section class="s-ink"><div class="inner">
+    <span class="eyebrow">03 · Salesperson Performance</span>
+    <h2 class="sec-title">YTD Jan – ${lastM} 2026</h2>
+    <div class="gold-rule"></div>
+    <div style="margin-bottom:30px;">
+      <div class="c-label" style="margin-bottom:14px;">Closer Leaderboard</div>
+      ${rows(sc, maxC)}
+    </div>
+    ${ss.length ? `<div class="gold-divider" style="margin:20px 0;"><span></span><i>◆</i><span></span></div>
+    <div>
+      <div class="c-label" style="margin-bottom:14px;">Setter Leaderboard</div>
+      ${rows(ss, maxS)}
+    </div>` : ''}
+  </div></section>`;
+}
+
+/* ── 04 Monthly Sales ── */
+function renderMonthlySales(months, monthData) {
+  /* SVG bar chart */
+  const maxVal = Math.max(...months.map(m=>monthData[m].total), MONTHLY_TARGET) * 1.12;
+  const plotH=170, plotW=550, left=60, bottom=190;
+  const n = months.length;
+  const gap = Math.floor(plotW/n);
+  const barW = Math.min(60, gap-18);
+  const bx = i => left + i*gap + Math.floor(gap/2) - Math.floor(barW/2);
+  const cx = i => left + i*gap + Math.floor(gap/2);
+  const yOf = v => bottom - Math.round(v/maxVal*plotH);
+  const hOf = v => Math.round(v/maxVal*plotH);
+
+  const gridVals = [0,250000,500000,750000,1000000];
+  let grid = gridVals.map(v => {
+    const y=yOf(v), lbl=v===0?'RM0':v>=1000000?'1.0M':v/1000+'K';
+    return `<line x1="${left}" y1="${y}" x2="${left+plotW}" y2="${y}" stroke="#E2DDD5" stroke-width="1"/>
+    <text x="${left-6}" y="${y+4}" text-anchor="end" font-size="10" fill="#8A9BAA" font-family="system-ui,sans-serif">${lbl}</text>`;
+  }).join('');
+  const ty = yOf(MONTHLY_TARGET);
+  grid += `<line x1="${left}" y1="${ty}" x2="${left+plotW}" y2="${ty}" stroke="#C93C3C" stroke-width="1.5" stroke-dasharray="6,4"/>
+  <rect x="${left+plotW-80}" y="${ty-18}" width="78" height="16" fill="white" opacity="0.85" rx="2"/>
+  <text x="${left+plotW-41}" y="${ty-6}" text-anchor="middle" font-size="10" fill="#C93C3C" font-weight="bold" font-family="system-ui,sans-serif">RM 1M target</text>`;
+
+  let bars='', xlabels='';
+  months.forEach((m,i) => {
+    const d=monthData[m], p=pct(d.total,MONTHLY_TARGET), col=pctColor(p);
+    const by=yOf(d.total), bh=hOf(d.total), lbl=m.split(' ')[0].slice(0,3);
+    bars    += `<rect x="${bx(i)}" y="${by}" width="${barW}" height="${bh}" fill="${col}" rx="3"/>`;
+    bars    += `<text x="${cx(i)}" y="${by-6}" text-anchor="middle" font-size="10" font-weight="bold" fill="#2A1E12" font-family="system-ui,sans-serif">${fmtK(d.total)}</text>`;
+    xlabels += `<text x="${cx(i)}" y="${bottom+16}" text-anchor="middle" font-size="12" font-weight="bold" fill="#2A1E12" font-family="system-ui,sans-serif">${lbl}</text>`;
+    xlabels += `<text x="${cx(i)}" y="${bottom+30}" text-anchor="middle" font-size="11" font-weight="bold" fill="${col}" font-family="system-ui,sans-serif">${p}%</text>`;
+    if (p>=100) xlabels += `<text x="${cx(i)}" y="${bottom+44}" text-anchor="middle" font-size="9" fill="${col}" font-family="system-ui,sans-serif">✓ Hit</text>`;
+  });
+
+  const svgH = bottom+52;
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${left*2+plotW} ${svgH}" style="width:100%;display:block;margin-bottom:10px;">
+    ${grid}${bars}
+    <line x1="${left}" y1="${bottom}" x2="${left+plotW}" y2="${bottom}" stroke="#C9A84C" stroke-width="1" opacity="0.4"/>
+    ${xlabels}
+  </svg>`;
+
+  /* Month accordions */
+  const accordions = months.map((month,i) => {
+    const d=monthData[month], p=pct(d.total,MONTHLY_TARGET), col=pctColor(p);
+    const shortM=month.split(' ')[0].slice(0,3);
+    const sortedC=Object.entries(d.courses).sort((a,b)=>b[1].students-a[1].students);
+    const teamBoxes=['A','B','C'].map(k=>{
+      const t=d.teams[k], tp=pct(t.total,TEAM_TARGETS[k]);
+      return `<div class="acc-tbox"><div class="tl">Team ${k} (${TEAM_NAMES[k]})</div><div class="tv">${fmt(t.total)}</div><div class="ts">${tp}% of ${fmt(TEAM_TARGETS[k])}</div></div>`;
+    }).join('');
+    return `<div class="acc-wrap">
+      <input type="checkbox" id="m${i}">
+      <label class="acc-label" for="m${i}">
+        <span class="acc-lbl">${shortM}</span>
+        <div class="acc-bar-wrap"><div class="acc-bar-track"><div class="acc-bar-fill" style="width:${Math.min(p,100)}%;background:${col};"></div></div></div>
+        <span class="acc-total">${fmt(d.total)}</span>
+        <span class="acc-pct" style="border-color:${col};color:${col};">${p}%</span>
+        <span class="acc-stu">${d.students} students</span>
+        <span class="acc-arrow">▼</span>
+      </label>
+      <div class="acc-body"><div class="acc-body-inner">
+        <div class="acc-teams">${teamBoxes}</div>
+        <span class="c-label">Course Breakdown</span>
+        <table class="ctbl"><thead><tr><th>Course</th><th>Students</th></tr></thead><tbody>
+          ${sortedC.map(([c,cd])=>`<tr><td>${esc(c)}</td><td>${cd.students}</td></tr>`).join('')}
+        </tbody></table>
+      </div></div>
+    </div>`;
+  }).join('');
+
+  const lastM = months[months.length-1].split(' ')[0];
+  return `<section class="s-cream"><div class="inner">
+    <span class="eyebrow">04 · Monthly Sales</span>
+    <h2 class="sec-title">vs. ${fmt(MONTHLY_TARGET)} Target</h2>
+    <div class="gold-rule"></div>
+    ${svg}
+    <div class="chart-legend">
+      <span class="leg"><span class="leg-sq" style="background:#639922;"></span>≥ 100%</span>
+      <span class="leg"><span class="leg-sq" style="background:#BA7517;"></span>70–99%</span>
+      <span class="leg"><span class="leg-sq" style="background:#378ADD;"></span>&lt; 70%</span>
+      <span class="leg"><span class="leg-dash"></span>RM 1M target</span>
+    </div>
+    <div class="gold-divider" style="margin:36px 0 24px;"><span></span><i>◆</i><span></span></div>
+    ${accordions}
+  </div></section>`;
+}
+
+/* ── Main ── */
+async function init() {
+  document.getElementById('dashboard').innerHTML = '<div class="loading-msg">正在读取 Google Sheets 数据…</div>';
+  document.getElementById('cover-sub').textContent = 'All figures in MYR · Loading…';
+  try {
+    const monthData = await loadData();
+    const months = ALL_MONTHS.filter(m => monthData[m]);
+    if (!months.length) throw new Error('找不到数据，请确认 Google Sheet 已公开分享（Anyone with the link can view）');
+
+    const currentMonth = months[months.length-1];
+    const shortCurrent = currentMonth.split(' ')[0];
+    const now = new Date().toLocaleString('en-MY', {dateStyle:'medium',timeStyle:'short'});
+
+    document.getElementById('cover-sub').textContent = `All figures in MYR · ${shortCurrent} 2026`;
+    document.getElementById('footer-updated').textContent = `Updated to ${currentMonth} · Loaded ${now}`;
+
+    document.getElementById('dashboard').innerHTML =
+      renderYearly(months, monthData) +
+      renderCurrentMonth(currentMonth, monthData[currentMonth]) +
+      renderSalesperson(months, monthData) +
+      renderMonthlySales(months, monthData);
+  } catch(e) {
+    document.getElementById('dashboard').innerHTML = `<div class="err-msg" style="padding:60px 28px;">
+      <p style="font-size:15px;margin-bottom:12px;">⚠ ${esc(e.message)}</p>
+      <p style="font-size:12px;color:var(--mist);">请确认 Google Sheet 已设置为「任何人都可以查看」</p>
+      <button class="refresh-btn" onclick="init()" style="margin-top:20px;">↻ 重试</button>
+    </div>`;
+    document.getElementById('cover-sub').textContent = 'All figures in MYR · Error loading data';
+    console.error(e);
+  }
+}
+
+init();
+</script>
+</body>
+</html>
